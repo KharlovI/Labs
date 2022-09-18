@@ -3,22 +3,21 @@
 
 namespace AllMatrix
 {
-	template<class T, class U>
-	class Matrix : public CyclicList::List<T>
+	template<class T>
+	class MatrixByList : public CyclicList::List<T>
 	{
-	private:
+	protected:
 		struct ID
 		{
 			int i;
 			int j;
 		};
-
-		CyclicList::List<U>* matrix = new CyclicList::List<U>();
+	private:
+		CyclicList::List<CyclicList::List<T>*>* matrix = new CyclicList::List<CyclicList::List<T>*>();
 		int size;
-
 	public:
 
-		Matrix(int size)
+		MatrixByList(int size)
 		{
 			this->size = size;
 
@@ -26,13 +25,8 @@ namespace AllMatrix
 			{
 				CyclicList::List<T>* temp = new CyclicList::List<T>(size);
 
-				this->matrix->AddNewNode((U)temp);
+				this->matrix->AddNewNode(temp);
 			}
-		}
-
-		~Matrix()
-		{
-			this->matrix->~List();
 		}
 
 		void PrintMatrix()
@@ -50,16 +44,59 @@ namespace AllMatrix
 		{
 			return ((this->matrix->GetNodeByIndex(position.i))->data->GetNodeByIndex(position.j));
 		}
+	};
 
-		std::vector<ID>(int value)
+	template <class T>
+	class MatrixByListByVectors : public CyclicList::List<T>
+	{
+	protected:
+		struct ID
 		{
-			std::vector<ID> v;
-			std::vector<int> buffer;
+			int i;
+			int j;
+		};
+	private:
+		CyclicList::List<std::vector<T>*>* matrix = new CyclicList::List<std::vector<T>*>();
+		ID size;
+	public:
+		MatrixByListByVectors(ID size) // i = string, j = column
+		{
+			srand(time(0));
+			this->size = size;
 
-			for (int i = 0; i < this->size; i++)
+			for (int i = 0; i < size.i; i++)
 			{
-				buffer = this->matrix->GetNodeByIndex(i)->data->GetIndexByValue(value);
+				std::vector<T>* temp = new std::vector<T>();
+
+				for (int j = 0; j < size.j; j++)
+				{
+					temp->push_back((rand() % 5 / 3));
+				}
+
+				this->matrix->AddNewNode(temp);
 			}
+		}
+
+		~MatrixByListByVectors()
+		{
+			for (int i = 0; i < this->size.i; i++)
+			{
+				delete this->matrix->GetNodeByIndex(i)->data;
+			}
+		}
+		void PrintVectorValues(std::vector<T>* v)
+		{
+			for (int j = 0; j < this->size.j; j++)
+			{
+				std::cout << v[j];
+			}
+		}
+
+		void PrintMatrix()
+		{
+			CyclicList::List<T>::template Node* iter = this->matrix->tail;
+
+
 		}
 	};
 }

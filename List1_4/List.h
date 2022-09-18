@@ -35,20 +35,15 @@ namespace CyclicList
             this->tail = nullptr;
         }
 
-        List(int size) // ? 
+        List(int size)
         {
             srand(time(0));
 
             this->head = nullptr;
             this->tail = nullptr;
 
-            //int value;
-
             for (int i = 0; i < size; i++)
             {
-                /* std::cin >> value;
-
-                 AddNewNode(value);*/
                 AddNewNode(T(rand() % 5) / 4);
             }
         }
@@ -58,13 +53,14 @@ namespace CyclicList
             Node* iter1 = this->head;
             Node* iter2 = this->head->next;
 
-            while (iter2 != nullptr)
+            while (iter2 != this->tail)
             {
                 delete iter1;
                 iter1 = iter2;
                 iter2 = iter2->next;
             }
 
+            delete iter1;
             delete iter2;
         }
 
