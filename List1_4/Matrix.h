@@ -267,4 +267,146 @@ namespace AllMatrix
 			}
 		}
 	};
+
+	template <class T>
+	class ArrayMatrix
+	{
+	private:
+		T** matrix;
+		CyclicList::ID size;
+	public:
+		ArrayMatrix(CyclicList::ID size, int answer) // 0 - randValues 1 - cin
+		{
+			this->size = size;
+			T** temp = new T * [size.i];
+
+			switch (answer)
+			{
+			case 0 :
+				srand(time(0));
+
+				for (int i = 0; i < size.i; i++)
+				{
+					temp[i] = new T[size.j];
+
+					for (int j = 0; j < this->size.j; j++)
+					{
+						temp[i][j] = (rand() % 10) / 7; // 7/10 - NULL
+					}
+				}
+
+				this->matrix = temp;
+				break;
+			case 1:
+				int value;
+
+				for (int i = 0; i < size.i; i++)
+				{
+					temp[i] = new T[size.j];
+
+					for (int j = 0; j < this->size.j; j++)
+					{
+						std::cin >> value;
+
+						temp[i][j] = value;
+					}
+				}
+
+				this->matrix = temp;
+				break;
+			}
+		}
+
+		~ArrayMatrix()
+		{
+			for (int i = 0; i < this->size; i++)
+			{
+				delete[] matrix[i];
+			}
+
+			delete[] matrix;
+		}
+
+		void PrintMatrix()
+		{
+			for (int i = 0; i < this->size.i; i++)
+			{
+				for (int j = 0; j < this->size.j; j++)
+				{
+					std::cout << this->matrix[i][j] << " ";
+				}
+				std::cout << std::endl;
+			}
+		}
+
+		T GetValueByIndexMatrix(CyclicList::ID index)
+		{
+			return this->matrix[index.i][index.j];
+		}
+
+		T GetFirstValueByConditionMatrix()
+		{
+			int answer = Condition(); // 1 - <		2 -	>		 3	 ==
+			T userValue;
+			std::cin >> userValue;
+
+			switch (answer)
+			{
+			case 1:
+				for (int i = 0; i < this->size.i; i++)
+				{
+					for (int j = 0; j < this->size.j; j++)
+					{
+						if (this->matrix[i][j] < userValue)
+						{
+							return this->matrix[i][j];
+						}
+					}
+				}
+				return NULL;
+			
+			case 2:
+				for (int i = 0; i < this->size.i; i++)
+				{
+					for (int j = 0; j < this->size.j; j++)
+					{
+						if (this->matrix[i][j] > userValue)
+						{
+							return this->matrix[i][j];
+						}
+					}
+				}
+				
+				return NULL;
+			case 3:
+				for (int i = 0; i < this->size.i; i++)
+				{
+					for (int j = 0; j < this->size.j; j++)
+					{
+						if (this->matrix[i][j] == userValue)
+						{
+							return this->matrix[i][j];
+						}
+					}
+				}
+				return NULL;
+			}
+		}
+
+		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
+		{
+			std::vector<CyclicList::ID> v;
+			for (int i = 0; i < this->size.i; i++)
+			{
+				for (int j = 0; j < this->size.j; j++)
+				{
+					if (this->matrix[i][j] == value)
+					{
+						v.push_back({ i,j });
+					}
+				}
+			}
+			return v;
+		}
+	};
 }
