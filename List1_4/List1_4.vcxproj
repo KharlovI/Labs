@@ -139,9 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Interface.cpp" />
     <ClCompile Include="List1_4.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Interface.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Utilits.h" />
