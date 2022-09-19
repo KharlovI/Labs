@@ -1,269 +1,270 @@
 #pragma once
-#include <iostream>
-#include <vector>
-namespace CyclicList
+#include "List.h"
+
+namespace AllMatrix
 {
-    template <typename T>
-    class List
-    {
-    public:
-        struct Node
-        {
-            T data;
+	template<class T>
+	class MatrixByList : public CyclicList::List<T>
+	{
+	private:
+		CyclicList::List<CyclicList::List<T>*>* matrix = new CyclicList::List<CyclicList::List<T>*>();
+		CyclicList::ID size;
+	public:
 
-            int index;
+		MatrixByList(CyclicList::ID size, int answer)
+		{
+			this->size = size;
 
-            Node* next;
-            Node* prev;
+			for (int i = 0; i < size.i; i++)
+			{
+				CyclicList::List<T>* temp = new CyclicList::List<T>(size.j, answer);
 
-            Node(T data)
-            {
-                this->data = data;
-                this->index = 0;
+				this->matrix->AddNewNode(temp);
+			}
+		}
 
-                this->next = nullptr;
-                this->prev = nullptr;
-            }
-        };
-    protected:
-        Node* head;
-        Node* tail;
-    public:
-        List()
-        {
-            this->head = nullptr;
-            this->tail = nullptr;
-        }
+		void PrintMatrix()
+		{
+			for (int i = 0; i < this->size.i; i++)
+			{
+				CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
+				iter->data->Print();
+				std::cout << std::endl;
+			}
+			std::cout << std::endl;
+		}
 
-        List(int size, int answer) // реализован ввыбор: ввести значения с консоли или рандомные
-        {
-            srand(time(0));
+		T GetValueByIndexMatrix(CyclicList::ID position)
+		{
+			CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
 
-            this->head = nullptr;
-            this->tail = nullptr;
+			while (iter->index != position.i)
+			{
+				iter = iter->prev;
+			}
+			return (iter->data->GetValueByIndex(position.j));
+		}
 
-            switch (answer)
-            {
-            case 0:
-                for (int i = 0; i < size; i++)
-                {
-                    AddNewNode(T(rand() % 5) / 4);
-                }
-                break;
-            case 1:
-                for (int i = 0; i < size; i++)
-                {
-                    int num;
-                    std::cin >> num;
+		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
+		{
+			std::vector<CyclicList::ID> temp;
+			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail;
 
-                    AddNewNode(num);
-                }
-            }
-        }
+			for (int i = 0; i < this->size.i; i++)
+			{
+				std::vector<int> intTemp;
 
-        ~List()
-        {
-            Node* iter1 = this->head;
-            Node* iter2 = this->head->next;
+				intTemp = iter->data.GetIndexByValue((T)value);
 
-            while (iter2 != this->tail)
-            {
-                delete iter1;
-                iter1 = iter2;
-                iter2 = iter2->next;
-            }
+				for (int j = 0; j < intTemp.capacity(); j++)
+				{
+					temp.push_back({ i,intTemp[j] });
+				}
 
-            delete iter1;
-            delete iter2;
-        }
+				iter = iter->prev;
+			}
 
-        void AddNewNode(T data)                        ////// O(1)
-        {
-            Node* temp = new Node(data);
+			return temp;
+		}
 
-            if (this->head == nullptr)
-            {
-                this->head = temp;
-                this->tail = temp;
+		T GetFirstValueByConditionMatrix()
+		{
+			CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
+			T answer = iter->data->GetFirstValueBycondition();
 
-                this->head->prev = this->tail;
-                this->tail->next = this->head;
-            }
+			while (answer == NULL && iter != this->matrix->GetHead())
+			{
+				iter = iter->prev;
+				answer = iter->data->GetFirstValueBycondition();
+			}
 
-            else
-            {
-                this->head->prev = temp;
-                temp->next = this->head;
-                this->head = temp;
+			return answer;
+		}
+	};
 
-                this->tail->next = this->head;
-                this->head->prev = this->tail;
+	template <class T>
+	class MatrixByListByVectors : public CyclicList::List<T>
+	{
+	private:
+		CyclicList::List<std::vector<T>*>* matrix = new CyclicList::List<std::vector<T>*>();
+		CyclicList::ID size;
+	public:
+		MatrixByListByVectors(CyclicList::ID size, int answer) // i = string, j = column
+		{
+			srand(time(0));
+			this->size = size;
 
-                this->head->index = this->head->next->index + 1;
-            }
-        }
+			switch (answer)
+			{
+			case 0:
+				for (int i = 0; i < size.i; i++)
+				{
+					std::vector<T>* temp = new std::vector<T>();
 
-        void Print()                        //////// O(n)
-        {
-            Node* iter = this->tail;
+					for (int j = 0; j < size.j; j++)
+					{
+						temp->push_back((rand() % 5 / 3));
+					}
 
-            while (iter != this->head)
-            {
-                std::cout << iter->data << " ";
+					this->matrix->AddNewNode(temp);
+				}
 
-                iter = iter->prev;
-            }
+				break;
+			case 1:
+				int value;
+				for (int i = 0; i < size.i; i++)
+				{
+					std::vector<T>* temp = new std::vector<T>();
+					for (int j = 0; j < size.j; j++)
+					{
+						std::cin >> value;
+						temp->push_back(value);
+					}
+					this->matrix->AddNewNode(temp);
+				}
+				break;
+			}
+		}
 
-            std::cout << iter->data;
-        }
+		~MatrixByListByVectors()
+		{
+			for (int i = 0; i < this->size.i; i++)
+			{
+				delete this->matrix->GetValueByIndex(i)->data;
+			}
+		}
 
-        Node* GetTail()
-        {
-            return this->tail;
-        }
+		void PrintVectorValues(std::vector<T>* v)
+		{
+			for (int j = 0; j < this->size.j; j++)
+			{
+				std::cout << (*v)[j] << " ";
+			}
 
-        Node* GetHead()
-        {
-            return this->head;
-        }
+			std::cout << std::endl;
+		}
 
-        Node* GetNodeByIndex(int index)                 ////// O(n)
-        {
-            if ((index - tail->index) <= (head->index - index))
-            {
-                Node* iter = this->tail;
+		void PrintMatrix()
+		{
+			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
 
-                while (iter->index != index)
-                {
-                    if (iter == this->head)
-                    {
-                        std::cout << "This index are not in the list" << std::endl;
-                        return nullptr;
-                    }
+			while (iter != this->matrix->GetHead())
+			{
+				PrintVectorValues(iter->data);
 
-                    iter = iter->prev;
-                }
-                return iter;
-            }
+				iter = iter->prev;
+			}
 
-            else
-            {
-                Node* iter = this->head;
+			PrintVectorValues(iter->data);
+		}
 
-                while (iter->index != index)
-                {
-                    if (iter == this->tail)
-                    {
-                        std::cout << "This index are not in the list" << std::endl;
-                        return nullptr;
-                    }
+		T GetValueByIndexMatrix(CyclicList::ID position)
+		{
+			if (position.i - this->matrix->GetTail()->index < this->matrix->GetHead()->index - position.j)
+			{
+				CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
+				while (iter->index != position.i)
+					iter = iter->prev;
 
-                    iter = iter->next;
-                }
-                return iter;
-            }
-        }
+				return (*iter->data)[position.j];
+			}
+			else
+			{
+				CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetHead();
+				while (iter->index != position.i)
+					iter = iter->next;
 
-        T GetFirstValueBycondition() // O(n) если не учитывать то, что юзер будет постоянно вводить неправильный ответ
-        {
-            std::cout << "choose condition:" << std::endl;
-            const std::string variants = "1) less than   2) more than  3)is equal to";
+				return (*iter->data)[position.j];
+			}
+		}
 
-            std::cout << variants << std::endl;
-            int answer;
-            while (answer > 3 || answer < 1)
-            {
-                std::cout << "Pleas, choose correct answer:" << std::endl;
-                std::cin >> answer;
-            }
-            switch (answer)
-            {
-            case 1:
-                int value;
-                Node* iter = this->tail;
+		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
+		{
+			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
+			std::vector<CyclicList::ID> vector;
 
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
+			for (int j = 0; j < this->size.j; j++)
+			{
+				if ((*iter->data)[j] == value)
+				{
+					vector.push_back({ (*iter).index, j });
+				}
+			}
 
-                while (iter->data > value || iter = this->head)
-                {
-                    iter = iter->prev;
-                }
+			while (iter != this->matrix->GetHead())
+			{
+				iter = iter->prev;
 
-                if (iter->data > value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
-                break;
-            case 2:
-                int value;
-                Node* iter = this->tail;
+				for (int j = 0; j < this->size.j; j++)
+				{
+					if ((*iter->data)[j] == value)
+					{
+						vector.push_back({ (*iter).index, j });
+					}
+				}
+			}
+			return vector;
+		}
 
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
+		T GetFirstValueByConditionMatrix()
+		{
+			int answer = Condition();
 
-                while (iter->data < value || iter = this->head)
-                {
-                    iter = iter->prev;
-                }
+			T value;
+			T returnedValue = NULL;
 
-                if (iter->data < value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
-                break;
-            case 3:
-                int value;
-                Node* iter = this->tail;
+			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
 
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
+			std::cout << "Enter value:" << std::endl;
+			std::cin >> value;
 
-                while (iter->data = value || iter = this->head)
-                {
-                    iter = iter->prev;
-                }
+			switch (answer)
+			{
+			case 1:
+				for (int i = 0; i < this->size.i; i++)
+				{
+					for (int j = 0; j < this->size.j; j++)
+					{
+						if ((*iter->data)[j] < value)
+						{
+							returnedValue = (*iter->data)[j];
+							return returnedValue;
+						}
+					}
+					iter = iter->prev;
+				}
+				return returnedValue;
 
-                if (iter->data = value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
-                break;
-            default:
-                std::cout << "Pleas, choose correct answer:" << std::endl;
-                std::cout << variants;
-                break;
-            }
-        }
+			case 2:
+				for (int i = 0; i < this->size.i; i++)
+				{
+					for (int j = 0; j < this->size.j; j++)
+					{
+						if ((*iter->data)[j] > value)
+						{
+							returnedValue = (*iter->data)[j];
+							return returnedValue;
+						}
+					}
+					iter = iter->prev;
+				}
+				return returnedValue;
 
-        std::vector<int> GetIndexByValue(T value)         /////O(n)
-        {
-            std::vector <int> indexes;
-            Node* iter = this->tail;
-
-            for (int i = 0; i < this->head->index; i++, iter = iter->prev)
-            {
-                if (iter->data == value)
-                {
-                    indexes.push_back(iter->index);
-                }
-            }
-            return indexes;
-        }
-    };
+			case 3:
+				for (int i = 0; i < size.i; i++)
+				{
+					for (int j = 0; j < size.j; j++)
+					{
+						if ((*iter->data)[j] = value)
+						{
+							returnedValue = (*iter->data)[j];
+							return returnedValue;
+						}
+					}
+					iter = iter->prev;
+				}
+				return returnedValue;
+			}
+		}
+	};
 }

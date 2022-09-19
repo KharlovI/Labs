@@ -1,8 +1,16 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "Utilits.h"
+
 namespace CyclicList
 {
+    struct ID
+    {
+        int i;
+        int j;
+    };
+
     template <typename T>
     class List
     {
@@ -127,7 +135,7 @@ namespace CyclicList
             return this->head;
         }
 
-        Node* GetNodeByIndex(int index)                 ////// O(n)
+        T GetValueByIndex(int index)                 ////// O(n)
         {
             if ((index - tail->index) <= (head->index - index))
             {
@@ -138,12 +146,12 @@ namespace CyclicList
                     if (iter == this->head)
                     {
                         std::cout << "This index are not in the list" << std::endl;
-                        return nullptr;
+                        return NULL;
                     }
 
                     iter = iter->prev;
                 }
-                return iter;
+                return iter->data;
             }
 
             else
@@ -155,99 +163,12 @@ namespace CyclicList
                     if (iter == this->tail)
                     {
                         std::cout << "This index are not in the list" << std::endl;
-                        return nullptr;
+                        return NULL;
                     }
 
                     iter = iter->next;
                 }
-                return iter;
-            }
-        }
-
-        T GetFirstValueBycondition() // O(n) если не учитывать то, что юзер будет постоянно вводить неправильный ответ
-        {
-            std::cout << "choose condition:" << std::endl;
-            const std::string variants = "1) less than   2) more than  3)is equal to";
-
-            std::cout << variants << std::endl;
-            int answer;
-            while (answer > 3 || answer < 1)
-            {
-                std::cout << "Pleas, choose correct answer:" << std::endl;
-                std::cin >> answer;
-            }
-            switch (answer)
-            {
-            case 1:
-                int value;
-                Node* iter = this->tail;
-
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
-
-                while (iter->data > value || iter = this->head)
-                {
-                    iter = iter->prev;
-                }
-
-                if (iter->data > value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
-                break;
-            case 2:
-                int value;
-                Node* iter = this->tail;
-
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
-
-                while (iter->data < value || iter = this->head)
-                {
-                    iter = iter->prev;
-                }
-
-                if (iter->data < value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
-                break;
-            case 3:
-                int value;
-                Node* iter = this->tail;
-
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
-
-                while (iter->data = value || iter = this->head)
-                {
-                    iter = iter->prev;
-                }
-
-                if (iter->data = value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
-                break;
-            default:
-                std::cout << "Pleas, choose correct answer:" << std::endl;
-                std::cout << variants;
-                break;
+                return iter->data;
             }
         }
 
@@ -264,6 +185,72 @@ namespace CyclicList
                 }
             }
             return indexes;
+        }
+
+        T GetFirstValueByCondition() // O(n)
+        {
+            int answer = Condition();
+            Node* iter = this->tail;
+            int value;
+
+            switch (answer)
+            {
+            case 1:
+                std::cout << "Enter value:" << std::endl;
+                std::cin >> value;
+
+                while (iter->data > value && iter != this->head)
+                {
+                    iter = iter->prev;
+                }
+
+                if (iter->data > value)
+                {
+                    std::cout << "value not found" << std::endl;
+                    return NULL;
+                }
+                else
+                {
+                    return value;
+                }
+            case 2:
+                std::cout << "Enter value:" << std::endl;
+                std::cin >> value;
+
+                while (iter->data < value && iter != this->head)
+                {
+                    iter = iter->prev;
+                }
+
+                if (iter->data < value)
+                {
+                    std::cout << "value not found" << std::endl;
+                    return NULL;
+                }
+                else
+                {
+                    return value;
+                }
+            case 3:
+
+                std::cout << "Enter value:" << std::endl;
+                std::cin >> value;
+
+                while (iter->data != value && iter != this->head)
+                {
+                    iter = iter->prev;
+                }
+
+                if (iter->data == value)
+                {
+                    std::cout << "value not found" << std::endl;
+                    return NULL;
+                }
+                else
+                {
+                    return value;
+                }
+            }
         }
     };
 }
