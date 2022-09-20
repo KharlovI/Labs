@@ -18,7 +18,6 @@ namespace CyclicList
         struct Node
         {
             T data;
-
             int index;
 
             Node* next;
@@ -42,8 +41,7 @@ namespace CyclicList
             this->head = nullptr;
             this->tail = nullptr;
         }
-
-        List(int size, int answer) // реализован ввыбор: ввести значения с консоли или рандомные
+        List(int size, int answer)
         {
             srand(time(0));
 
@@ -55,7 +53,7 @@ namespace CyclicList
             case 0:
                 for (int i = 0; i < size; i++)
                 {
-                    AddNewNode(T(rand() % 5) / 4);
+                    AddNewNode(T(rand() % 7) / 5);
                 }
                 break;
             case 1:
@@ -68,7 +66,6 @@ namespace CyclicList
                 }
             }
         }
-
         ~List()
         {
             Node* iter1 = this->head;
@@ -135,6 +132,24 @@ namespace CyclicList
             return this->head;
         }
 
+        List<T>* Sum(List<T>* l2, int size)
+        {
+            T sum;
+            List<T>* l3 = new List<T>();
+            Node* iter = this->tail;
+            Node* iter2 = (*l2).tail;
+
+            for (int i = 0; i < size; i++)
+            {
+                sum = iter->data + iter2->data;
+                l3->AddNewNode(sum);
+                iter = iter->prev;
+                iter2 = iter2->prev;
+            }
+
+            return l3;
+        }
+
         T GetValueByIndex(int index)                 ////// O(n)
         {
             if ((index - tail->index) <= (head->index - index))
@@ -171,7 +186,6 @@ namespace CyclicList
                 return iter->data;
             }
         }
-
         std::vector<int> GetIndexByValue(T value)         /////O(n)
         {
             std::vector <int> indexes;
@@ -186,7 +200,6 @@ namespace CyclicList
             }
             return indexes;
         }
-
         T GetFirstValueByCondition() // O(n)
         {
             int answer = Condition();
