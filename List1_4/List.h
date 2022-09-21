@@ -41,6 +41,15 @@ namespace CyclicList
             this->head = nullptr;
             this->tail = nullptr;
         }
+        List(int size)
+        {
+            this->head = nullptr;
+            this->tail = nullptr;
+            for (int i = 0; i < size; i++)
+            {
+                AddNewNode(NULL);
+            }
+        }
         List(int size, int answer)
         {
             srand(time(0));
@@ -53,13 +62,13 @@ namespace CyclicList
             case 0:
                 for (int i = 0; i < size; i++)
                 {
-                    AddNewNode(T(rand() % 7) / 5);
+                    AddNewNode(T((rand() % 7) / 5));
                 }
                 break;
             case 1:
                 for (int i = 0; i < size; i++)
                 {
-                    int num;
+                    T num;
                     std::cin >> num;
 
                     AddNewNode(num);
@@ -107,7 +116,6 @@ namespace CyclicList
                 this->head->index = this->head->next->index + 1;
             }
         }
-
         void Print()                        //////// O(n)
         {
             Node* iter = this->tail;
@@ -126,7 +134,6 @@ namespace CyclicList
         {
             return this->tail;
         }
-
         Node* GetHead()
         {
             return this->head;
@@ -134,15 +141,13 @@ namespace CyclicList
 
         List<T>* Sum(List<T>* l2, int size)
         {
-            T sum;
             List<T>* l3 = new List<T>();
             Node* iter = this->tail;
             Node* iter2 = (*l2).tail;
 
             for (int i = 0; i < size; i++)
             {
-                sum = iter->data + iter2->data;
-                l3->AddNewNode(sum);
+                l3->AddNewNode(iter->data + iter2->data);
                 iter = iter->prev;
                 iter2 = iter2->prev;
             }
@@ -200,69 +205,35 @@ namespace CyclicList
             }
             return indexes;
         }
-        T GetFirstValueByCondition() // O(n)
+        T GetFirstValueByCondition(int answer, T value) // O(n)
         {
-            int answer = Condition();
             Node* iter = this->tail;
-            int value;
-
             switch (answer)
             {
             case 1:
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
-
-                while (iter->data > value && iter != this->head)
+                for (int i = 0; i < (this->head->index + 1); i++)
                 {
+                    if(iter->data < value)
+                        return iter->data;
                     iter = iter->prev;
                 }
-
-                if (iter->data > value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
+                return T(NULL);
             case 2:
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
-
-                while (iter->data < value && iter != this->head)
+                for (int i = 0; i < (this->head->index + 1); i++)
                 {
+                    if (iter->data > value)
+                        return iter->data;
                     iter = iter->prev;
                 }
-
-                if (iter->data < value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
+                return T(NULL);
             case 3:
-
-                std::cout << "Enter value:" << std::endl;
-                std::cin >> value;
-
-                while (iter->data != value && iter != this->head)
+                for (int i = 0; i < (this->head->index + 1); i++)
                 {
+                    if (iter->data == value)
+                        return iter->data;
                     iter = iter->prev;
                 }
-
-                if (iter->data == value)
-                {
-                    std::cout << "value not found" << std::endl;
-                    return NULL;
-                }
-                else
-                {
-                    return value;
-                }
+                return T(NULL);
             }
         }
     };

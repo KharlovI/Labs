@@ -10,23 +10,52 @@ namespace AllMatrix
 		CyclicList::List<CyclicList::List<T>*>* matrix = new CyclicList::List<CyclicList::List<T>*>();
 		CyclicList::ID size;
 	public:
+		MatrixByList()
+		{
+			this->head = nullptr;
+			this->tail = nullptr;
+			this->size = { NULL,NULL };
+		}
+		MatrixByList(int size)
+		{
+			this->head = nullptr;
+			this->tail = nullptr;
+			this->size = { size,0 };
+			for (int i = 0; i < size; i++)
+			{
+				CyclicList::List<T>* temp = new CyclicList::List<T>();
+				this->matrix->AddNewNode(temp);
+			}
+		}
 		MatrixByList(CyclicList::ID size)
 		{
 			this->head = nullptr;
 			this->tail = nullptr;
 			this->size = size;
+			for (int i = 0; i < size.i; i++)
+			{
+				CyclicList::List<T>* temp = new CyclicList::List<T>(size.j);
+				this->matrix->AddNewNode(temp);
+			}
 		}
-
 		MatrixByList(CyclicList::ID size, int answer)
 		{
 			this->size = size;
-
 			for (int i = 0; i < size.i; i++)
 			{
 				CyclicList::List<T>* temp = new CyclicList::List<T>(size.j, answer);
-
 				this->matrix->AddNewNode(temp);
 			}
+		}
+
+		void SetSize(CyclicList::ID size)
+		{
+			this->size.i = size.i;
+			this->size.j = size.j;
+		}
+		CyclicList::ID GetSize()
+		{
+			return this->size;
 		}
 
 		void PrintMatrix()
@@ -51,47 +80,50 @@ namespace AllMatrix
 			}
 			return (iter->data->GetValueByIndex(position.j));
 		}
-
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
 		{
 			std::vector<CyclicList::ID> temp;
-			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
+			CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
+			CyclicList::List<T>::template Node* iter2 = iter->data->GetTail();
 
 			for (int i = 0; i < this->size.i; i++)
 			{
-				std::vector<int> intTemp;
-
-				intTemp = iter->data.GetIndexByValue((T)value);
-
-				for (int j = 0; j < intTemp.capacity(); j++)
+				for (int j = 0; j < this->size.j; j++)
 				{
-					temp.push_back({ i,intTemp[j] });
+					if(iter2->data == value)
+					temp.push_back({ iter->index,iter2->index});
+					iter2 = iter2->prev;
 				}
-
 				iter = iter->prev;
+				iter2 = iter->data->GetTail();
 			}
 
 			return temp;
 		}
-
 		T GetFirstValueByConditionMatrix()
 		{
 			CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
-			T answer = iter->data->GetFirstValueBycondition();
+			int condition = Condition();
+			T value;
+			std::cout << "Enter value:" << std::endl;
+			std::cin >> value;
 
-			while (answer == NULL && iter != this->matrix->GetHead())
+			T answer = iter->data->GetFirstValueByCondition(condition, value);
+
+			for (int i = 0; i < this->size.i; i++)
 			{
+				if (answer != T(NULL))
+					return answer;
 				iter = iter->prev;
-				answer = iter->data->GetFirstValueBycondition();
+				answer = iter->data->GetFirstValueByCondition(condition, value);
 			}
-
 			return answer;
 		}
 
 		MatrixByList<T>* SumMatrix(MatrixByList<T>* m2)
 		{
-			MatrixByList<T>* answer = new MatrixByList<T>(this->size);
-
+			MatrixByList<T>* answer = new MatrixByList<T>();
+			answer->SetSize(this->size);
 			CyclicList::List<CyclicList::List<T>*>::template Node* iterForMatrix1 = this->matrix->GetTail();
 			CyclicList::List<CyclicList::List<T>*>::template Node* iterForMatrix2 = m2->matrix->GetTail();
 
@@ -108,7 +140,68 @@ namespace AllMatrix
 			}
 			return answer;
 		}
-		MatrixByListByVectors<T>* MultiplyMatrices(MatrixByListByVectors<T>* m2);
+		MatrixByList<T>* MultiplyMatrices(MatrixByList<T>* m2)
+		{
+			if (this->size.j == m2->size.i)
+			{
+				MatrixByList<T>* answer = new MatrixByList<T>({ this->size.i, m2->size.j });
+				CyclicList::List<CyclicList::List<T>*>::template Node* iterMatrixAnswer = answer->matrix->GetTail();
+				CyclicList::List<CyclicList::List<T>*>::template Node* iterMatrix1 = this->matrix->GetTail();
+				CyclicList::List<CyclicList::List<T>*>::template Node* iterMatrix2 = m2->matrix->GetTail();
+
+				CyclicList::List<T>::template Node* iterListAnswer = iterMatrixAnswer->data->GetTail();
+				CyclicList::List<T>::template Node* iterList1 = iterMatrix1->data->GetTail();
+				CyclicList::List<T>::template Node* iterList2 = iterMatrix2->data->GetTail();
+
+
+				for (int k = 0; k < this->size.i; k++)
+				{
+					for (int i = 0; i < this->size.j; i++)
+					{
+						for (int j = 0; j < m2->size.j; j++)
+						{
+							iterListAnswer->data += iterList1->data * iterList2->data;
+
+							iterList2 = iterList2->prev;
+							iterListAnswer = iterListAnswer->prev;
+						}
+						iterMatrix2 = iterMatrix2->prev;
+						iterList2 = iterMatrix2->data->GetTail();
+						iterList1 = iterList1 ->prev;
+					}
+					iterMatrix1 = iterMatrix1->prev;
+					iterList1 = iterMatrix1->data->GetTail();
+					iterMatrixAnswer = iterMatrixAnswer->prev;
+					iterListAnswer = iterMatrixAnswer->data->GetTail();
+				}
+				return answer;
+			}
+
+			return nullptr;
+		}
+		MatrixByList<T>* MatrixTransposition()
+		{
+			MatrixByList<T>* answer = new MatrixByList<T>(this->size.j);
+			answer->SetSize({ this->size.j, this->size.i });
+			CyclicList::List<CyclicList::List<T>*>::template Node* iterMatrix1 = this->matrix->GetTail();
+			CyclicList::List<CyclicList::List<T>*>::template Node* iterMatrix2 = answer->matrix->GetTail();
+
+			CyclicList::List<T>::template Node* iter1 = iterMatrix1->data->GetTail();
+			//CyclicList::List<T>::template Node* iter2 = iterMatrix2->data->GetTail();
+
+			for (int i = 0; i < answer->size.j; i++)
+			{
+				for (int j = 0; j < answer->size.i; j++)
+				{
+					(*iterMatrix2->data).AddNewNode(iter1->data);
+					iterMatrix2 = iterMatrix2->prev;
+					iter1 = iter1->prev;
+				}
+				iterMatrix1 = iterMatrix1->prev;
+				iter1 = iterMatrix1->data->GetTail();
+			}
+			return answer;
+		}
 	};
 
 	template <class T>
@@ -118,6 +211,12 @@ namespace AllMatrix
 		CyclicList::List<std::vector<T>*>* matrix = new CyclicList::List<std::vector<T>*>();
 		CyclicList::ID size;
 	public:
+		MatrixByListByVectors()
+		{
+			this->head = nullptr;
+			this->tail = nullptr;
+			this->size = {NULL,NULL};
+		}
 		MatrixByListByVectors(CyclicList::ID size)
 		{
 			this->head = nullptr;
@@ -157,13 +256,13 @@ namespace AllMatrix
 
 				break;
 			case 1:
-				int value;
+				T value;
 				for (int i = 0; i < size.i; i++)
 				{
 					std::vector<T>* temp = new std::vector<T>();
 					for (int j = 0; j < size.j; j++)
 					{
-						std::cin >> value;
+						std::cin >>  value;
 						temp->push_back(value);
 					}
 					this->matrix->AddNewNode(temp);
@@ -188,7 +287,14 @@ namespace AllMatrix
 
 			std::cout << std::endl;
 		}
-
+		CyclicList::ID GetSize()
+		{
+			return this->size;
+		}
+		void SetSize(CyclicList::ID size)
+		{
+			this->size = size;
+		}
 		void PrintMatrix()
 		{
 			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
@@ -222,7 +328,6 @@ namespace AllMatrix
 				return (*iter->data)[position.j];
 			}
 		}
-
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
 		{
 			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
@@ -250,7 +355,6 @@ namespace AllMatrix
 			}
 			return vector;
 		}
-
 		T GetFirstValueByConditionMatrix()
 		{
 			int answer = Condition();
@@ -314,7 +418,8 @@ namespace AllMatrix
 
 		MatrixByListByVectors<T>* SumMatrix(MatrixByListByVectors<T>* m2)
 		{
-			MatrixByListByVectors<T>* answer = new MatrixByListByVectors<T>(this->size);
+			MatrixByListByVectors<T>* answer = new MatrixByListByVectors<T>();
+			answer->SetSize({this->size.i, this->size.j});
 			CyclicList::List<std::vector<T>*>::template Node* iterForMatrix1 = this->matrix->GetTail();
 			CyclicList::List<std::vector<T>*>::template Node* iterForMatrix2 = m2->matrix->GetTail();
 
@@ -348,13 +453,29 @@ namespace AllMatrix
 					{
 						for (int i = 0; i < m2->size.i; i++)
 						{
-							(*iterAnswer->data)[j] += (*iter1->data)[i] * (*iter2->data)[j];
+							(*iterAnswer->data)[j] = (*iter1->data)[i] * (*iter2->data)[j];
 							iter2 = iter2->prev;
 						}
 					}
 					iter1 = iter1->prev;
 					iterAnswer = iterAnswer->prev;
 				}
+			}
+			return answer;
+		}
+		MatrixByListByVectors<T>* MatrixTransposition()
+		{
+			MatrixByListByVectors<T>* answer = new MatrixByListByVectors<T>({this->size.j, this->size.i});
+			CyclicList::List<std::vector<T>*>::template Node* iter1 = this->matrix->GetTail();
+			CyclicList::List<std::vector<T>*>::template Node* iter2 = answer->matrix->GetTail();
+			for (int i = 0; i < answer->size.i; i++)
+			{
+				for (int j = 0; j < answer->size.j; j++)
+				{
+					(*iter2->data)[j] = (*iter1->data)[i];
+					iter1 = iter1->prev;
+				}
+				iter2 = iter2->prev;
 			}
 			return answer;
 		}
@@ -382,7 +503,7 @@ namespace AllMatrix
 
 			this->matrix = temp;
 		}
-		ArrayMatrix(CyclicList::ID size, int answer) // 0 - randValues 1 - cin
+		ArrayMatrix(CyclicList::ID size, int answer)
 		{
 			this->size = size;
 			T** temp = new T * [size.i];
@@ -398,14 +519,14 @@ namespace AllMatrix
 
 					for (int j = 0; j < this->size.j; j++)
 					{
-						temp[i][j] = ((T)(rand() % 10) / 7); // 7/10 - NULL
+						temp[i][j] = (T)((rand() % 10) / 7);
 					}
 				}
 
 				this->matrix = temp;
 				break;
 			case 1:
-				int value;
+				T value;
 
 				for (int i = 0; i < size.i; i++)
 				{
@@ -443,6 +564,10 @@ namespace AllMatrix
 				}
 				std::cout << std::endl;
 			}
+		}
+		CyclicList::ID GetSize()
+		{
+			return this->size;
 		}
 
 		T GetValueByIndexMatrix(CyclicList::ID index)
@@ -548,6 +673,19 @@ namespace AllMatrix
 			{
 				std::cout << "Wrong size( " << std::endl;
 			}
+			return answer;
+		}
+		ArrayMatrix<T>* MatrixTransposition()
+		{
+			ArrayMatrix<T>* answer = new ArrayMatrix<T>({ this->size.j, this->size.i });
+			for (int i = 0; i < answer->size.i; i++)
+			{
+				for (int j = 0; j < answer->size.j; j++)
+				{
+					answer->matrix[i][j] = this->matrix[j][i];
+				}
+			}
+
 			return answer;
 		}
 	};

@@ -1,9 +1,9 @@
 #pragma once
 #include<iostream>
+#include "List.h"
 
 inline int Condition()
 {
-    std::cout << "choose condition:" << std::endl;
     std::cout << "0)Exit  1) less than   2) more than  3)is equal to" << std::endl;
 
     int answer;
@@ -14,7 +14,7 @@ inline int Condition()
         std::cout << "Pleas, choose correct answer:" << std::endl;
         std::cin >> answer;
     }
-
+    std::cout << std::endl;
     return answer;
 }
 inline void ShowOptions()
@@ -34,5 +34,6 @@ inline int Answer()
         std::cin >> answer;
     }
 
+    std::cout << std::endl;
     return answer;
 }

@@ -12,91 +12,37 @@ void Interface::Start()
 	dataType = SetDataType();
 	size = SetSizeOfMatrix();
 
-	switch (typeOfMatrix)
+	if (typeOfMatrix == 1)
 	{
-	case 0:
-		break;
-	case 1:
-		if (dataType == 0)
+		if (dataType == 1)
 		{
-			break;
-		}
-		else if (dataType == 1)
-		{
-			AllMatrix::MatrixByList<int>* matrix = new AllMatrix::MatrixByList<int>(size, Answer());
-			break;
+			AllMatrix::MatrixByList<int>* matrix1 = new AllMatrix::MatrixByList<int>(size,Answer());
+			DoOperationListMatrix<int>(matrix1);
 		}
 		else if (dataType == 2)
 		{
-			AllMatrix::MatrixByList<float>* matrix = new AllMatrix::MatrixByList<float>(size, Answer());
-			break;
+			AllMatrix::MatrixByList<float>* matrix1 = new AllMatrix::MatrixByList<float>(size, Answer());
+			DoOperationListMatrix<float>(matrix1);
 		}
 		else if (dataType == 3)
 		{
-			AllMatrix::MatrixByList<double>* matrix = new AllMatrix::MatrixByList<double>(size, Answer());
-			break;
+			AllMatrix::MatrixByList<double>* matrix1 = new AllMatrix::MatrixByList<double>(size, Answer());
+			DoOperationListMatrix<double>(matrix1);
 		}
-		else if (dataType == 4)
-		{
-			AllMatrix::MatrixByList<bool>* matrix = new AllMatrix::MatrixByList<bool>(size, Answer());
-			break;
-		}
-		break;
-
-	case 2:
-		if (dataType == 0)
-		{
-			break;
-		}
-		else if (dataType == 1)
-		{
-			AllMatrix::MatrixByListByVectors<int>* matrix = new AllMatrix::MatrixByListByVectors<int>(size, Answer());
-			break;
-		}
-		else if (dataType == 2)
-		{
-			AllMatrix::MatrixByListByVectors<float>* matrix = new AllMatrix::MatrixByListByVectors<float>(size, Answer());
-			break;
-		}
-		else if (dataType == 3)
-		{
-			AllMatrix::MatrixByListByVectors<double>* matrix = new AllMatrix::MatrixByListByVectors<double>(size, Answer());
-			break;
-		}
-		else if (dataType == 4)
-		{
-			AllMatrix::MatrixByListByVectors<bool>* matrix = new AllMatrix::MatrixByListByVectors<bool>(size, Answer());
-			break;
-		}
-		break;
-
-	case 3:
-		if (dataType == 0)
-		{
-			break;
-		}
-		else if (dataType == 1)
-		{
-			AllMatrix::ArrayMatrix<int>* matrix = new AllMatrix::ArrayMatrix<int>(size, Answer());
-			break;
-		}
-		else if (dataType == 2)
-		{
-			AllMatrix::ArrayMatrix<float>* matrix = new AllMatrix::ArrayMatrix<float>(size, Answer());
-			break;
-		}
-		else if (dataType == 3)
-		{
-			AllMatrix::ArrayMatrix<double>* matrix = new AllMatrix::ArrayMatrix<double>(size, Answer());
-			break;
-		}
-		else if (dataType == 4)
-		{
-			AllMatrix::ArrayMatrix<bool>* matrix = new AllMatrix::ArrayMatrix<bool>(size, Answer());
-			break;
-		}
-		break;
+		
 	}
+
+	/// <summary>
+	/// ///
+	/// </summary>
+	/*else if (typeOfMatrix == 2)
+	{
+
+	}
+	else if (typeOfMatrix == 3)
+	{
+
+	}*/
 }
 
 int Interface::SetTypeOfMatrix()
@@ -111,15 +57,17 @@ int Interface::SetTypeOfMatrix()
 		std::cout << "Pleas, choose correct answer:" << std::endl;
 		std::cin >> answer;
 	}
+	std::cout << std::endl;
+
 	return answer;
 }
 int Interface::SetDataType()
 {
 	int answer;
 	std::cout << "Choose type of data:" << std::endl;
-	std::cout << "0)Exit   1) int	2) float	3)double	4)bool";
+	std::cout << "0)Exit   1) int	2) float	3)double	4)bool" << std::endl;
 	std::cin >> answer;
-
+	std::cout << std::endl;
 	while (answer > 4 || answer < 0)
 	{
 		std::cout << "Pleas, choose correct answer:" << std::endl;
@@ -137,6 +85,7 @@ int Interface::ChooseOption()
 	while(answer < 0 || answer > 7)
 	std::cin >> answer;
 
+	std::cout << std::endl;
 	return answer;
 }
 
