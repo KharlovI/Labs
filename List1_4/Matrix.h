@@ -47,6 +47,32 @@ namespace AllMatrix
 				this->matrix->AddNewNode(temp);
 			}
 		}
+		~MatrixByList()
+		{
+			CyclicList::List<CyclicList::List<T>*>::template Node* iterForMatrix1 = this->matrix->GetTail();
+			CyclicList::List<CyclicList::List<T>*>::template Node* iterForMatrix2 = iterForMatrix1->prev;
+
+			CyclicList::List<T>::template Node* iter1 = iterForMatrix1->data->GetTail();
+			CyclicList::List<T>::template Node* iter2 = iter1->prev;
+			for (int i = 0; i < this->size.i - 2; i++)
+			{
+				for (int j = 0; j < this->size.j - 2; j++)
+				{
+					delete (iter1);
+					iter1 = iter2;
+					iter2 = iter2->prev;
+				}
+				delete (iter1);
+				delete iter2;
+				delete (iterForMatrix1);
+				iterForMatrix1 = iterForMatrix2;
+				iterForMatrix2 = iterForMatrix2->prev;
+				iter1 = iterForMatrix1->data->GetTail();
+				iter2 = iter1->prev;
+			}
+			delete iterForMatrix1;
+			delete iterForMatrix2;
+		}
 
 		void SetSize(CyclicList::ID size)
 		{
@@ -282,12 +308,15 @@ namespace AllMatrix
 		{
 			CyclicList::List<std::vector<T>*>::template Node* iterForMatrix1 = this->matrix->GetTail();
 			CyclicList::List<std::vector<T>*>::template Node* iterForMatrix2 = iterForMatrix1->prev;
-			for (int i = 0; i < this->size.i; i++)
+			for (int i = 0; i < this->size.i - 2; i++)
 			{
 				delete (iterForMatrix1->data);
+				delete (iterForMatrix1);
 				iterForMatrix1 = iterForMatrix2;
 				iterForMatrix2 = iterForMatrix2->prev;
 			}
+			delete (iterForMatrix1);
+			delete (iterForMatrix2);
 		}
 
 		void PrintVectorValues(std::vector<T>* v)

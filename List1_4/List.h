@@ -77,7 +77,7 @@ namespace CyclicList
         }
         ~List()
         {
-            Node* iter1 = this->head;
+            /*Node* iter1 = this->head;
             Node* iter2 = this->head->next;
 
             while (iter2 != this->tail)
@@ -88,7 +88,7 @@ namespace CyclicList
             }
 
             delete iter1;
-            delete iter2;
+            delete iter2;*/
         }
 
         void AddNewNode(T data)                        ////// O(1)

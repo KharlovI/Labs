@@ -22,16 +22,19 @@ void Interface::Start()
 				{
 					AllMatrix::MatrixByList<int>* matrix1 = new AllMatrix::MatrixByList<int>(size, Answer());
 					DoOperationListMatrix<int>(matrix1);
+					delete matrix1;
 				}
 				else if (dataType == 2)
 				{
 					AllMatrix::MatrixByList<float>* matrix1 = new AllMatrix::MatrixByList<float>(size, Answer());
 					DoOperationListMatrix<float>(matrix1);
+					delete matrix1;
 				}
 				else if (dataType == 3)
 				{
 					AllMatrix::MatrixByList<double>* matrix1 = new AllMatrix::MatrixByList<double>(size, Answer());
 					DoOperationListMatrix<double>(matrix1);
+					delete matrix1;
 				}
 			}
 
@@ -41,16 +44,19 @@ void Interface::Start()
 				{
 					AllMatrix::MatrixByListByVectors<int>* matrix1 = new AllMatrix::MatrixByListByVectors<int>(size, Answer());
 					DoOperationVectoreMatrix<int>(matrix1);
+					delete matrix1;
 				}
 				else if (dataType == 2)
 				{
 					AllMatrix::MatrixByListByVectors<float>* matrix1 = new AllMatrix::MatrixByListByVectors<float>(size, Answer());
 					DoOperationVectoreMatrix<float>(matrix1);
+					delete matrix1;
 				}
 				else if (dataType == 3)
 				{
 					AllMatrix::MatrixByListByVectors<double>* matrix1 = new AllMatrix::MatrixByListByVectors<double>(size, Answer());
 					DoOperationVectoreMatrix<double>(matrix1);
+					delete matrix1;
 				}
 			}
 			else if (typeOfMatrix == 3)
@@ -59,16 +65,19 @@ void Interface::Start()
 				{
 					AllMatrix::ArrayMatrix<int>* matrix1 = new AllMatrix::ArrayMatrix<int>(size, Answer());
 					DoOperationArrayMatrix<int>(matrix1);
+					delete matrix1;
 				}
 				else if (dataType == 2)
 				{
 					AllMatrix::ArrayMatrix<float>* matrix1 = new AllMatrix::ArrayMatrix<float>(size, Answer());
 					DoOperationArrayMatrix<float>(matrix1);
+					delete matrix1;
 				}
 				else if (dataType == 3)
 				{
 					AllMatrix::ArrayMatrix<double>* matrix1 = new AllMatrix::ArrayMatrix<double>(size, Answer());
 					DoOperationArrayMatrix<double>(matrix1);
+					delete matrix1;
 				}
 			}
 		}

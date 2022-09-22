@@ -5,8 +5,8 @@ int main()
 {
 	/*Interface i{};
 	i.Start();*/
-	AllMatrix::MatrixByListByVectors<double>* m1 = new AllMatrix::MatrixByListByVectors<double>({3000,3000},0);
-	
+	AllMatrix::MatrixByListByVectors<double>* m1 = new AllMatrix::MatrixByListByVectors<double>({3,3},0);
+	delete m1;
 
 	//AllMatrix::ArrayMatrix<double>* m2 = new AllMatrix::ArrayMatrix<double>({ 3000,3000 }, 0);
 	//m2->~ArrayMatrix();
