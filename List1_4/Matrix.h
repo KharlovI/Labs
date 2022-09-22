@@ -72,13 +72,21 @@ namespace AllMatrix
 
 		T GetValueByIndexMatrix(CyclicList::ID position)
 		{
-			CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
-
-			while (iter->index != position.i)
+			if (this->size.i >= position.i && this->size.j >= position.j)
 			{
-				iter = iter->prev;
+				CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
+
+				while (iter->index != (position.i - 1))
+				{
+					iter = iter->prev;
+				}
+				return (iter->data->GetValueByIndex(position.j - 1));
 			}
-			return (iter->data->GetValueByIndex(position.j));
+			else
+			{
+				std::cout << "out of range: i = " << this->size.i << "  j = " << this->size.j << std::endl;
+				return (T)NULL;
+			}
 		}
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
 		{
@@ -272,9 +280,13 @@ namespace AllMatrix
 		}
 		~MatrixByListByVectors()
 		{
+			CyclicList::List<std::vector<T>*>::template Node* iterForMatrix1 = this->matrix->GetTail();
+			CyclicList::List<std::vector<T>*>::template Node* iterForMatrix2 = iterForMatrix1->prev;
 			for (int i = 0; i < this->size.i; i++)
 			{
-				delete this->matrix->GetValueByIndex(i)->data;
+				delete (iterForMatrix1->data);
+				iterForMatrix1 = iterForMatrix2;
+				iterForMatrix2 = iterForMatrix2->prev;
 			}
 		}
 
@@ -311,21 +323,29 @@ namespace AllMatrix
 
 		T GetValueByIndexMatrix(CyclicList::ID position)
 		{
-			if (position.i - this->matrix->GetTail()->index < this->matrix->GetHead()->index - position.j)
+			if (this->size.i >= position.i && this->size.j >= position.j)
 			{
-				CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
-				while (iter->index != position.i)
-					iter = iter->prev;
+				if (position.i - this->matrix->GetTail()->index < this->matrix->GetHead()->index - position.j)
+				{
+					CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
+					while (iter->index != position.i - 1)
+						iter = iter->prev;
 
-				return (*iter->data)[position.j];
+					return (*iter->data)[position.j - 1];
+				}
+				else
+				{
+					CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetHead();
+					while (iter->index != position.i - 1)
+						iter = iter->next;
+
+					return (*iter->data)[position.j - 1];
+				}
 			}
 			else
 			{
-				CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetHead();
-				while (iter->index != position.i)
-					iter = iter->next;
-
-				return (*iter->data)[position.j];
+				std::cout << "out of range: i = " << this->size.i << "  j = " << this->size.j << std::endl;
+				return (T)NULL;
 			}
 		}
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
@@ -453,7 +473,7 @@ namespace AllMatrix
 					{
 						for (int i = 0; i < m2->size.i; i++)
 						{
-							(*iterAnswer->data)[j] = (*iter1->data)[i] * (*iter2->data)[j];
+							(*iterAnswer->data)[j] += (*iter1->data)[i] * (*iter2->data)[j];
 							iter2 = iter2->prev;
 						}
 					}
@@ -546,7 +566,7 @@ namespace AllMatrix
 		}
 		~ArrayMatrix()
 		{
-			for (int i = 0; i < this->size; i++)
+			for (int i = 0; i < this->size.i; i++)
 			{
 				delete[] matrix[i];
 			}
@@ -572,11 +592,16 @@ namespace AllMatrix
 
 		T GetValueByIndexMatrix(CyclicList::ID index)
 		{
-			return this->matrix[index.i][index.j];
+			if (this->size.i >= index.i && this->size.j >= index.j)
+				return this->matrix[index.i - 1][index.j - 1];
+
+			else
+				std::cout << "out of range: i = "<< this->size.i << "  j = " << this->size.j << std::endl;
+			return (T)NULL;
 		}
 		T GetFirstValueByConditionMatrix()
 		{
-			int answer = Condition(); // 1 - <		2 -	>		 3	 ==
+			int answer = Condition();
 			T userValue;
 			std::cin >> userValue;
 
