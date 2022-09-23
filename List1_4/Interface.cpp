@@ -1,4 +1,5 @@
 #include "Interface.h"
+#include "TimeDate.h"
 
 void Interface::Start()
 {
@@ -104,7 +105,7 @@ int Interface::SetDataType()
 {
 	int answer;
 	std::cout << "Choose type of data:" << std::endl;
-	std::cout << "0)Exit   1) int	2) float   3)double" << std::endl;
+	std::cout << "0)Exit   1) int	2) float   3)double  4) time" << std::endl;
 	std::cin >> answer;
 	std::cout << std::endl;
 	while (answer > 4 || answer < 0)

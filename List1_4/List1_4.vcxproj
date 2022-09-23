@@ -141,11 +141,14 @@
   <ItemGroup>
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="List1_4.cpp" />
+    <ClCompile Include="TimeData.cpp" />
+    <ClCompile Include="TimeDate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Interface.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="TimeDate.h" />
     <ClInclude Include="Utilits.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
