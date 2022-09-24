@@ -40,7 +40,6 @@
 
 		DateTime operator + (DateTime& time2)
 		{
-			time2.NormalizeTime();
 
 			DateTime answer{};
 			int year = this->date.year + time2.date.year;
@@ -51,7 +50,7 @@
 			int second = this->date.second + time2.date.second;
 
 			answer.SetData(year,month,day,hour,minut,second);
-			answer.NormalizeTime();
+			//answer.NormalizeTime();
 
 			return answer;
 		}
@@ -267,7 +266,7 @@
 		DateTime operator * (DateTime& time2)
 		{
 			DateTime answer{};
-			int year = this->date.year + time2.date.year;
+			int year = this->date.year * time2.date.year;
 			int month = this->date.month * time2.date.month;
 			int day = this->date.day * time2.date.day;
 			int hour = this->date.hour * time2.date.hour;
@@ -275,7 +274,7 @@
 			int second = this->date.second * time2.date.second;
 
 			answer.SetData(year, month, day, hour, minut, second);
-			answer.NormalizeTime();
+			//answer.NormalizeTime();
 			return answer;
 		}
 		DateTime& operator = (int randValue)
@@ -293,12 +292,12 @@
 		inline friend std::istream& operator >> (std::istream& in, DateTime& date);
 		DateTime& operator +=(DateTime time1)
 		{
-			this->date.year = time1.date.year;
-			this->date.month = time1.date.month;
-			this->date.day = time1.date.day;
-			this->date.hour = time1.date.hour;
-			this->date.minut = time1.date.minut;
-			this->date.second = time1.date.second;
+			this->date.year += time1.date.year;
+			this->date.month += time1.date.month;
+			this->date.day += time1.date.day;
+			this->date.hour += time1.date.hour;
+			this->date.minut += time1.date.minut;
+			this->date.second += time1.date.second;
 			
 			return *this;
 		}

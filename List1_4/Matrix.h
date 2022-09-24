@@ -222,7 +222,6 @@ namespace AllMatrix
 			CyclicList::List<CyclicList::List<T>*>::template Node* iterMatrix2 = answer->matrix->GetTail();
 
 			CyclicList::List<T>::template Node* iter1 = iterMatrix1->data->GetTail();
-			//CyclicList::List<T>::template Node* iter2 = iterMatrix2->data->GetTail();
 
 			for (int i = 0; i < answer->size.j; i++)
 			{
@@ -316,7 +315,9 @@ namespace AllMatrix
 				iterForMatrix1 = iterForMatrix2;
 				iterForMatrix2 = iterForMatrix2->prev;
 			}
+			delete (iterForMatrix1->data);
 			delete (iterForMatrix1);
+			delete (iterForMatrix2->data);
 			delete (iterForMatrix2);
 		}
 

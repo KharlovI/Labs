@@ -103,11 +103,6 @@ void Interface::Start()
 					AllMatrix::ArrayMatrix<DateTime>* matrix1 = new AllMatrix::ArrayMatrix<DateTime>(size, Answer());
 
 					int option = ChooseOption();
-					while (option == 6)
-					{
-						std::cout << "This option is unvaluable for dataType (date)" << std::endl;
-						option = ChooseOption();
-					}
 					DoOperationArrayMatrix<DateTime>(matrix1, option);
 					delete matrix1;
 				}

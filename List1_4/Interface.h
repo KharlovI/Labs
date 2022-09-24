@@ -73,11 +73,6 @@ inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByList<T>* matrix2 = new AllMatrix::MatrixByList<T>(size, answer);
-			matrix->PrintMatrix();
-			std::cout << "  +  " << std::endl;
-			matrix2->PrintMatrix();
-			std::cout << "  ||  " << std::endl;
-			matrix->SumMatrix(matrix2)->PrintMatrix();
 			delete matrix2;
 		}
 		else if (option == 6)
@@ -93,18 +88,14 @@ inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByList<T>* matrix2 = new AllMatrix::MatrixByList<T>(size, answer);
-			matrix->PrintMatrix();
-			std::cout << "  *  " << std::endl;
-			matrix2->PrintMatrix();
-			std::cout << "  ||  " << std::endl;
-			matrix->MultiplyMatrices(matrix2)->PrintMatrix();
 			std::cout << std::endl;
 			delete matrix2;
 		}
 		else if (option == 7)
 		{
 			std::cout << std::endl;
-			matrix->MatrixTransposition()->PrintMatrix();
+			AllMatrix::MatrixByList<T>* matrix2 = matrix->MatrixTransposition();
+			delete matrix2;
 		}
 		option = ChooseOption();
 	}
@@ -162,11 +153,6 @@ inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByListByVectors<T>* matrix2 = new AllMatrix::MatrixByListByVectors<T>(size, answer);
-			matrix->PrintMatrix();
-			std::cout << "  +  " << std::endl;
-			matrix2->PrintMatrix();
-			std::cout << "  ||  " << std::endl;
-			matrix->SumMatrix(matrix2)->PrintMatrix();
 			delete matrix2;
 		}
 		else if (option == 6)
@@ -182,18 +168,13 @@ inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByListByVectors<T>* matrix2 = new AllMatrix::MatrixByListByVectors<T>(size, answer);
-			matrix->PrintMatrix();
-			std::cout << "  *  " << std::endl;
-			matrix2->PrintMatrix();
-			std::cout << "  ||  " << std::endl;
-			matrix->MultiplyMatrices(matrix2)->PrintMatrix();
-			std::cout << std::endl;
 			delete matrix2;
 		}
 		else if (option == 7)
 		{
 			std::cout << std::endl;
-			matrix->MatrixTransposition()->PrintMatrix();
+			AllMatrix::MatrixByListByVectors<T>* matrix2 = matrix->MatrixTransposition();
+			delete matrix2;
 		}
 		option = ChooseOption();
 	}
@@ -250,11 +231,6 @@ inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::ArrayMatrix<T>* matrix2 = new AllMatrix::ArrayMatrix<T>(size, answer);
-			matrix->PrintMatrix();
-			std::cout << "  +  " << std::endl;
-			matrix2->PrintMatrix();
-			std::cout << "  ||  " << std::endl;
-			matrix->SumMatrix(matrix2)->PrintMatrix();
 			delete matrix2;
 		}
 		else if (option == 6)
@@ -270,18 +246,14 @@ inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::ArrayMatrix<T>* matrix2 = new AllMatrix::ArrayMatrix<T>(size, answer);
-			matrix->PrintMatrix();
-			std::cout << "  *  " << std::endl;
-			matrix2->PrintMatrix();
-			std::cout << "  ||  " << std::endl;
-			matrix->MultiplyMatrices(matrix2)->PrintMatrix();
 			std::cout << std::endl;
 			delete matrix2;
 		}
 		else if (option == 7)
 		{
 			std::cout << std::endl;
-			matrix->MatrixTransposition()->PrintMatrix();
+			AllMatrix::ArrayMatrix<T>* matrix2 = matrix->MatrixTransposition();
+			delete matrix2;
 		}
 		option = ChooseOption();
 	}
