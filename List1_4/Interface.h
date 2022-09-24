@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Matrix.h"
+#include "TimeDate.h"
 
 class Interface
 {
@@ -10,20 +11,19 @@ public:
 	int ChooseOption();
 
 	template<typename T>
-	void DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix);
+	void DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix, int option);
 	template<typename T>
-	void DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors<T>* matrix);
+	void DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors<T>* matrix, int option);
 	template<typename T>
-	void DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix);
+	void DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix, int option);
 
 	void Start();
 	CyclicList::ID SetSizeOfMatrix();
 };
 
 template<typename T>
-inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix)
+inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix, int option)
 {
-	int option = ChooseOption();
 	while (option != 0)
 	{
 		if (option == 1)
@@ -111,9 +111,8 @@ inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix)
 }
 
 template<typename T>
-inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors<T>* matrix)
+inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors<T>* matrix, int option)
 {
-	int option = ChooseOption();
 	while (option != 0)
 	{
 		if		(option == 1)
@@ -201,9 +200,8 @@ inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors
 }
 
 template<typename T>
-inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix)
+inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix, int option)
 {
-	int option = ChooseOption();
 	while (option != 0)
 	{
 		if (option == 1)
@@ -216,8 +214,7 @@ inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix)
 			CyclicList::ID position;
 			std::cout << "Enter position(2 digits):" << std::endl;
 			std::cin >> position.i >> position.j;
-			T value = matrix->GetValueByIndexMatrix(position);
-			std::cout << value;
+			matrix->GetValueByIndexMatrix(position);
 			std::cout << std::endl;
 		}
 		else if (option == 3)
@@ -244,7 +241,7 @@ inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix)
 		{
 			CyclicList::ID size;
 			std::cout << "Enter the second matrix:" << std::endl;
-			std::cout << "Size:";
+			std::cout << "Size:" << std::endl;
 			std::cin >> size.i >> size.j;
 			while (size.i != matrix->GetSize().i || size.j != matrix->GetSize().j)
 			{

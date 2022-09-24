@@ -22,20 +22,27 @@ void Interface::Start()
 				if (dataType == 1)
 				{
 					AllMatrix::MatrixByList<int>* matrix1 = new AllMatrix::MatrixByList<int>(size, Answer());
-					DoOperationListMatrix<int>(matrix1);
+					int option = ChooseOption();
+					DoOperationListMatrix<int>(matrix1, option);
 					delete matrix1;
 				}
 				else if (dataType == 2)
 				{
 					AllMatrix::MatrixByList<float>* matrix1 = new AllMatrix::MatrixByList<float>(size, Answer());
-					DoOperationListMatrix<float>(matrix1);
+					int option = ChooseOption();
+					DoOperationListMatrix<float>(matrix1, option);
 					delete matrix1;
 				}
 				else if (dataType == 3)
 				{
 					AllMatrix::MatrixByList<double>* matrix1 = new AllMatrix::MatrixByList<double>(size, Answer());
-					DoOperationListMatrix<double>(matrix1);
+					int option = ChooseOption();
+					DoOperationListMatrix<double>(matrix1, option);
 					delete matrix1;
+				}
+				else if (dataType == 4)
+				{
+					std::cout << "You can not chouse this type" << std::endl;
 				}
 			}
 
@@ -44,40 +51,64 @@ void Interface::Start()
 				if (dataType == 1)
 				{
 					AllMatrix::MatrixByListByVectors<int>* matrix1 = new AllMatrix::MatrixByListByVectors<int>(size, Answer());
-					DoOperationVectoreMatrix<int>(matrix1);
+					int option = ChooseOption();
+					DoOperationVectoreMatrix<int>(matrix1, option);
 					delete matrix1;
 				}
 				else if (dataType == 2)
 				{
 					AllMatrix::MatrixByListByVectors<float>* matrix1 = new AllMatrix::MatrixByListByVectors<float>(size, Answer());
-					DoOperationVectoreMatrix<float>(matrix1);
+					int option = ChooseOption();
+					DoOperationVectoreMatrix<float>(matrix1, option);
 					delete matrix1;
 				}
 				else if (dataType == 3)
 				{
 					AllMatrix::MatrixByListByVectors<double>* matrix1 = new AllMatrix::MatrixByListByVectors<double>(size, Answer());
-					DoOperationVectoreMatrix<double>(matrix1);
+					int option = ChooseOption();
+					DoOperationVectoreMatrix<double>(matrix1, option);
 					delete matrix1;
 				}
+				else if (dataType == 4)
+				{
+					std::cout << "You can not chouse this type" << std::endl;
+				}
+
 			}
 			else if (typeOfMatrix == 3)
 			{
 				if (dataType == 1)
 				{
 					AllMatrix::ArrayMatrix<int>* matrix1 = new AllMatrix::ArrayMatrix<int>(size, Answer());
-					DoOperationArrayMatrix<int>(matrix1);
+					int option = ChooseOption();
+					DoOperationArrayMatrix<int>(matrix1, option);
 					delete matrix1;
 				}
 				else if (dataType == 2)
 				{
 					AllMatrix::ArrayMatrix<float>* matrix1 = new AllMatrix::ArrayMatrix<float>(size, Answer());
-					DoOperationArrayMatrix<float>(matrix1);
+					int option = ChooseOption();
+					DoOperationArrayMatrix<float>(matrix1,option);
 					delete matrix1;
 				}
 				else if (dataType == 3)
 				{
 					AllMatrix::ArrayMatrix<double>* matrix1 = new AllMatrix::ArrayMatrix<double>(size, Answer());
-					DoOperationArrayMatrix<double>(matrix1);
+					int option = ChooseOption();
+					DoOperationArrayMatrix<double>(matrix1, option);
+					delete matrix1;
+				}
+				else if (dataType == 4)
+				{
+					AllMatrix::ArrayMatrix<DateTime>* matrix1 = new AllMatrix::ArrayMatrix<DateTime>(size, Answer());
+
+					int option = ChooseOption();
+					while (option == 6)
+					{
+						std::cout << "This option is unvaluable for dataType (date)" << std::endl;
+						option = ChooseOption();
+					}
+					DoOperationArrayMatrix<DateTime>(matrix1, option);
 					delete matrix1;
 				}
 			}
@@ -105,7 +136,7 @@ int Interface::SetDataType()
 {
 	int answer;
 	std::cout << "Choose type of data:" << std::endl;
-	std::cout << "0)Exit   1) int	2) float   3)double  4) time" << std::endl;
+	std::cout << "0)Exit   1) int	2) float   3)double  4) date" << std::endl;
 	std::cin >> answer;
 	std::cout << std::endl;
 	while (answer > 4 || answer < 0)

@@ -52,8 +52,6 @@ namespace CyclicList
         }
         List(int size, int answer)
         {
-            srand(time(0));
-
             this->head = nullptr;
             this->tail = nullptr;
 
@@ -62,7 +60,7 @@ namespace CyclicList
             case 0:
                 for (int i = 0; i < size; i++)
                 {
-                    AddNewNode(T((rand() % 7) / 5));
+                    AddNewNode(T((rand() % 7) / 5) * (rand() % 100));
                 }
                 break;
             case 1:

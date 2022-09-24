@@ -1,5 +1,5 @@
 #include "TimeDate.h"
-Date::Time::Time(int year, int month, int day, int hour, int minut, int second)
+Time::Time(int year, int month, int day, int hour, int minut, int second)
 {
 	this->year = year;
 	this->month = month;
@@ -8,7 +8,7 @@ Date::Time::Time(int year, int month, int day, int hour, int minut, int second)
 	this->minut = minut;
 	this->second = second;
 }
-Date::Time::Time()
+Time::Time()
 {
 	this->year = NULL;
 	this->month = NULL;
@@ -18,7 +18,7 @@ Date::Time::Time()
 	this->second = NULL;
 }
 
-void Date::DateTime::SetData(int year, int month, int day, int hour, int minut, int second)
+void DateTime::SetData(int year, int month, int day, int hour, int minut, int second)
 {
 	if (year < 0 || month < 0 || day < 0 || hour < 0 || minut < 0 || second < 0)
 	{
@@ -34,34 +34,51 @@ void Date::DateTime::SetData(int year, int month, int day, int hour, int minut, 
 	this->date.second = second;
 }
 
-int Date::DateTime::GetSec()
+int DateTime::GetSec()
 {
 	return this->date.second;
 }
-int Date::DateTime::GetMin()
+int DateTime::GetMin()
 {
 	return this->date.minut;
 }
-int Date::DateTime::GetHour()
+int DateTime::GetHour()
 {
 	return this->date.hour;
 }
-int Date::DateTime::GetDay()
+int DateTime::GetDay()
 {
 	return this->date.day;
 }
-int Date::DateTime::GetMonth()
+int DateTime::GetMonth()
 {
 	return this->date.month;
 }
 
-int Date::DateTime::GetYear()
+int DateTime::GetYear()
 {
 	return this->date.year;
 }
 
+bool DateTime::IsBigerOrEqual(DateTime& date2)
+{
+	if (this->date.year != date2.date.year)
+		return this->date.year > date2.date.year;
+	else if (this->date.month != date2.date.month)
+		return this->date.year > date2.date.month;
+	else if (this->date.day != date2.date.day)
+		return this->date.day > date2.date.day;
+	else if (this->date.hour != date2.date.hour)
+		return this->date.hour > date2.date.hour;
+	else if (this->date.minut != date2.date.minut)
+		return this->date.minut > date2.date.minut;
+	else if (this->date.second != date2.date.second)
+		return this->date.second > date2.date.second;
 
-bool Date::DateTime::IsCorrectByGregorianCalendar()
+	return 1;
+}
+
+bool DateTime::IsCorrectByGregorianCalendar()
 {
 	if (this->date.month > 12)
 		return 0;
@@ -111,7 +128,7 @@ bool Date::DateTime::IsCorrectByGregorianCalendar()
 		return 0;
 	return 1;
 }
-bool Date::DateTime::IsLeapYear()
+bool DateTime::IsLeapYear()
 {
 	if (this->date.year % 400 == 0)
 		return 1;
@@ -123,7 +140,7 @@ bool Date::DateTime::IsLeapYear()
 	return 0;
 }
 
-void Date::DateTime::PrintExactDate()
+void DateTime::PrintExactDate()
 {
 	std::cout << "Year:  \t" << this->date.year << std::endl;
 	std::cout << "Month: \t" << this->date.month << std::endl;
@@ -133,7 +150,7 @@ void Date::DateTime::PrintExactDate()
 	std::cout << "Second:\t" << this->date.second << std::endl;
 	std::cout << std::endl;
 }
-void Date::DateTime::PrintDateByGregorianCalendar()
+void DateTime::PrintDateByGregorianCalendar()
 {
 	std::cout <<this->date.day << ".";
 	if (this->date.month > 10)
@@ -143,9 +160,74 @@ void Date::DateTime::PrintDateByGregorianCalendar()
 	std::cout << std::endl;
 }
 
-void Date::DateTime::NormalizeTime()
+
+void DateTime::PrintDayOfWeek()
 {
-	while(this->date.second > 59)
+	int lastTwoDigits = this->date.year % 100;
+	int firstDigits = this->date.year % 10000;
+
+	const int koef = 6 - 2 * (((firstDigits - lastTwoDigits) / 100) % 4);
+	const int codeOfYear = (koef + lastTwoDigits + lastTwoDigits / 4) % 7;
+
+	int codeOfMonth;	
+	if (this->date.month == 1 || this->date.month == 2)
+	{
+		codeOfMonth = 1;
+	}
+	else if (this->date.month == 5)
+	{
+		codeOfMonth = 2;
+	}
+	else if (this->date.month == 8)
+	{
+		codeOfMonth = 3;
+	}
+	else if (this->date.month == 6)
+	{
+		codeOfMonth = 5;
+	}
+	else if (this->date.month == 12 || this->date.month == 9)
+	{
+		codeOfMonth = 6;
+	}
+	else if (this->date.month == 4 || this->date.month == 7)
+	{
+		codeOfMonth = 0;
+	}
+	else
+	{
+		codeOfMonth = 4;
+	}
+
+	int dayOfWeek = (this->date.day + codeOfMonth + codeOfYear) % 7;
+	switch (dayOfWeek)
+	{
+	case 0:
+		std::cout << "Saturday" << std::endl;
+		break;
+	case 1:
+		std::cout << "Sunday" << std::endl;
+		break;
+	case 2:
+		std::cout << "Monday" << std::endl;
+		break;
+	case 3:
+		std::cout << "Tuesday" << std::endl;
+		break;
+	case 4:
+		std::cout << "Wednesday" << std::endl;
+		break;
+	case 5:
+		std::cout << "Thursday" << std::endl;
+		break;
+	case 6:
+		std::cout << "Friday" << std::endl;
+		break;
+	}
+}
+void DateTime::NormalizeTime()
+{
+	while (this->date.second > 59)
 	{
 		this->date.minut++;
 		this->date.second -= 60;
@@ -160,66 +242,82 @@ void Date::DateTime::NormalizeTime()
 		this->date.day++;
 		this->date.hour -= 24;
 	}
-	if (this->date.month == 2)
+	if (this->date.month == 2 && this->date.day >= 28)
 	{
 		if (IsLeapYear())
 		{
-			while (this->date.day > 28)
+			if (this->date.day > 28)
 			{
 				this->date.month++;
 				this->date.day -= 28;
+				while (true)
+				{
+					if (this->date.month % 2 == 0 && this->date.month < 8)
+					{
+						this->date.month++;
+						this->date.day -= 30;
+					}
+					else if (this->date.month % 2 == 0 && this->date.month > 8)
+					{
+						this->date.month++;
+						this->date.day -= 31;
+					}
+					else if (this->date.month % 2 == 1 && this->date.month < 8)
+					{
+						this->date.month++;
+						this->date.day -= 31;
+					}
+					else if (this->date.month % 2 == 1 && this->date.month > 8)
+					{
+						this->date.month++;
+						this->date.day -= 30;
+					}
+					else
+					{
+						break;
+					}
+				}
 			}
 		}
 		else
 		{
-			while(this->date.day > 27)
+			if (this->date.day > 27)
 			{
 				this->date.month++;
 				this->date.day -= 27;
+				while (true)
+				{
+					if (this->date.month % 2 == 0 && this->date.month < 8)
+					{
+						this->date.month++;
+						this->date.day -= 30;
+					}
+					else if (this->date.month % 2 == 0 && this->date.month > 8)
+					{
+						this->date.month++;
+						this->date.day -= 31;
+					}
+					else if (this->date.month % 2 == 1 && this->date.month < 8)
+					{
+						this->date.month++;
+						this->date.day -= 31;
+					}
+					else if (this->date.month % 2 == 1 && this->date.month > 8)
+					{
+						this->date.month++;
+						this->date.day -= 30;
+					}
+					else
+					{
+						break;
+					}
+				}
 			}
-		}
-	}
-	else if (this->date.month % 2 == 0 && this->date.month < 8)
-	{
-		while (this->date.day > 30)
-		{
-			this->date.month++;
-			this->date.day -= 30;
-		}
-	}
-	else if(this->date.month % 2 == 1 && this->date.month > 8)
-	{
-		while (this->date.day > 30)
-		{
-			this->date.month++;
-			this->date.day -= 30;
-		}
-	}
-	else if(this->date.month % 2 == 0 && this->date.month > 8)
-	{
-		while (this->date.day > 31)
-		{
-			this->date.month++;
-			this->date.day -= 31;
-		}
-	}
-	else if (this->date.month % 2 == 1 && this->date.month < 8)
-	{
-		while (this->date.day > 31)
-		{
-			this->date.month++;
-			this->date.day -= 31;
 		}
 	}
 	while (this->date.month > 12)
 	{
-		this->date.year++;
-		this->date.month -= 12;
+		this->date.minut++;
+		this->date.second -= 12;
 	}
 }
-
-//void Date::DateTime::PrintDayOfWeek()
-//{
-//	const int koef = 
-//	int codeOfYear = (6 + 5*(this->date.year % 100))
-//}

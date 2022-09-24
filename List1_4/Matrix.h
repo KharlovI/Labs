@@ -1,6 +1,6 @@
 #pragma once
 #include "List.h"
-
+#include "TimeDate.h"
 namespace AllMatrix
 {
 	template<class T>
@@ -40,6 +40,7 @@ namespace AllMatrix
 		}
 		MatrixByList(CyclicList::ID size, int answer)
 		{
+			srand(time(0));
 			this->size = size;
 			for (int i = 0; i < size.i; i++)
 			{
@@ -262,13 +263,13 @@ namespace AllMatrix
 
 				for (int j = 0; j < size.j; j++)
 				{
-					temp->push_back(NULL);
+					temp->push_back((T) NULL);
 				}
 
 				this->matrix->AddNewNode(temp);
 			}
 		}
-		MatrixByListByVectors(CyclicList::ID size, int answer) // i = string, j = column
+		MatrixByListByVectors(CyclicList::ID size, int answer)
 		{
 			srand(time(0));
 			this->size = size;
@@ -282,7 +283,7 @@ namespace AllMatrix
 
 					for (int j = 0; j < size.j; j++)
 					{
-						temp->push_back((T)(rand() % 5 / 3));
+						temp->push_back(T(rand() % 5 / 3));
 					}
 
 					this->matrix->AddNewNode(temp);
@@ -568,7 +569,7 @@ namespace AllMatrix
 
 					for (int j = 0; j < this->size.j; j++)
 					{
-						temp[i][j] = (T)((rand() % 10) / 7);
+						temp[i][j] = ((rand() % 10) / 7);
 					}
 				}
 
@@ -614,19 +615,19 @@ namespace AllMatrix
 				std::cout << std::endl;
 			}
 		}
+
 		CyclicList::ID GetSize()
 		{
 			return this->size;
 		}
 
-		T GetValueByIndexMatrix(CyclicList::ID index)
+		void GetValueByIndexMatrix(CyclicList::ID index)
 		{
 			if (this->size.i >= index.i && this->size.j >= index.j)
-				return this->matrix[index.i - 1][index.j - 1];
+				std::cout << this->matrix[index.i - 1][index.j - 1] << std::endl;
 
 			else
 				std::cout << "out of range: i = "<< this->size.i << "  j = " << this->size.j << std::endl;
-			return (T)NULL;
 		}
 		T GetFirstValueByConditionMatrix()
 		{
@@ -647,7 +648,8 @@ namespace AllMatrix
 						}
 					}
 				}
-				return NULL;
+				std::cout << "Value not found" << std::endl;
+				return userValue;
 			
 			case 2:
 				for (int i = 0; i < this->size.i; i++)
@@ -661,7 +663,7 @@ namespace AllMatrix
 					}
 				}
 				
-				return NULL;
+				return userValue;
 			case 3:
 				for (int i = 0; i < this->size.i; i++)
 				{
@@ -673,7 +675,7 @@ namespace AllMatrix
 						}
 					}
 				}
-				return NULL;
+				return  userValue;
 			}
 		}
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
@@ -700,7 +702,7 @@ namespace AllMatrix
 			{
 				for (int j = 0; j < this->size.j; j++)
 				{
-					answer->matrix[i][j] = this->matrix[i][j] + (*m2).matrix[i][j];
+					answer->matrix[i][j] = this->matrix[i][j] + m2->matrix[i][j];
 				}
 			}
 
@@ -718,7 +720,7 @@ namespace AllMatrix
 					{
 						for (int j = 0; j < this->size.j; j++)
 						{
-							answer->matrix[i][k] += (this->matrix[i][j] * m2->matrix[j][k]);
+							answer->matrix[i][k] += this->matrix[i][j] * m2->matrix[j][k];
 						}
 					}
 				}
