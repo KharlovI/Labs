@@ -28,9 +28,10 @@ namespace CyclicList
                 this->data = data;
                 this->index = 0;
 
-                this->next = nullptr;
-                this->prev = nullptr;
+                next = nullptr;
+                prev = nullptr;
             }
+     
         };
     protected:
         Node* head;
@@ -38,8 +39,8 @@ namespace CyclicList
     public:
         List()
         {
-            this->head = nullptr;
-            this->tail = nullptr;
+            head = nullptr;
+            tail = nullptr;
         }
         List(int size)
         {
@@ -52,9 +53,8 @@ namespace CyclicList
         }
         List(int size, int answer)
         {
-            this->head = nullptr;
-            this->tail = nullptr;
-
+            head = nullptr;
+            tail = nullptr;
             switch (answer)
             {
             case 0:
@@ -73,37 +73,48 @@ namespace CyclicList
                 }
             }
         }
+        ~List()
+        {
+           Node* temp;
+           while (tail != head)
+           {
+               temp = tail->prev;
+               delete tail;
+               tail = temp;
+           }
+           delete tail;
+        }
 
         void AddNewNode(T data)                        ////// O(1)
         {
             Node* temp = new Node(data);
 
-            if (this->head == nullptr)
+            if (head == nullptr)
             {
-                this->head = temp;
-                this->tail = temp;
+                head = temp;
+                tail = temp;
 
-                this->head->prev = this->tail;
-                this->tail->next = this->head;
+                head->prev = tail;
+                tail->next = head;
             }
 
             else
             {
-                this->head->prev = temp;
-                temp->next = this->head;
-                this->head = temp;
+                head->prev = temp;
+                temp->next = head;
+                head = temp;
 
-                this->tail->next = this->head;
-                this->head->prev = this->tail;
+                tail->next = head;
+                head->prev = tail;
 
-                this->head->index = this->head->next->index + 1;
+                head->index = head->next->index + 1;
             }
         }
         void Print()                        //////// O(n)
         {
-            Node* iter = this->tail;
+            Node* iter = tail;
 
-            while (iter != this->head)
+            while (iter != head)
             {
                 std::cout << iter->data << " ";
 
@@ -115,18 +126,18 @@ namespace CyclicList
 
         Node* GetTail()
         {
-            return this->tail;
+            return tail;
         }
         Node* GetHead()
         {
-            return this->head;
+            return head;
         }
 
         List<T>* Sum(List<T>* l2, int size)
         {
             List<T>* l3 = new List<T>();
-            Node* iter = this->tail;
-            Node* iter2 = (*l2).tail;
+            Node* iter = tail;
+            Node* iter2 = l2->tail;
 
             for (int i = 0; i < size; i++)
             {
@@ -142,11 +153,11 @@ namespace CyclicList
         {
             if ((index - tail->index) <= (head->index - index))
             {
-                Node* iter = this->tail;
+                Node* iter = tail;
 
                 while (iter->index != index)
                 {
-                    if (iter == this->head)
+                    if (iter == head)
                     {
                         std::cout << "This index are not in the list" << std::endl;
                         return NULL;
@@ -159,11 +170,11 @@ namespace CyclicList
 
             else
             {
-                Node* iter = this->head;
+                Node* iter = head;
 
                 while (iter->index != index)
                 {
-                    if (iter == this->tail)
+                    if (iter == tail)
                     {
                         std::cout << "This index are not in the list" << std::endl;
                         return NULL;
@@ -177,7 +188,7 @@ namespace CyclicList
         std::vector<int> GetIndexByValue(T value)         /////O(n)
         {
             std::vector <int> indexes;
-            Node* iter = this->tail;
+            Node* iter = tail;
 
             for (int i = 0; i < this->head->index; i++, iter = iter->prev)
             {
@@ -190,11 +201,11 @@ namespace CyclicList
         }
         T GetFirstValueByCondition(int answer, T value) // O(n)
         {
-            Node* iter = this->tail;
+            Node* iter = tail;
             switch (answer)
             {
             case 1:
-                for (int i = 0; i < (this->head->index + 1); i++)
+                for (int i = 0; i < (head->index + 1); i++)
                 {
                     if(iter->data < value)
                         return iter->data;
@@ -202,7 +213,7 @@ namespace CyclicList
                 }
                 return T(NULL);
             case 2:
-                for (int i = 0; i < (this->head->index + 1); i++)
+                for (int i = 0; i < (head->index + 1); i++)
                 {
                     if (iter->data > value)
                         return iter->data;
@@ -210,7 +221,7 @@ namespace CyclicList
                 }
                 return T(NULL);
             case 3:
-                for (int i = 0; i < (this->head->index + 1); i++)
+                for (int i = 0; i < (head->index + 1); i++)
                 {
                     if (iter->data == value)
                         return iter->data;
