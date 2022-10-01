@@ -50,7 +50,6 @@
 			int second = this->date.second + time2.date.second;
 
 			answer.SetData(year,month,day,hour,minut,second);
-			//answer.NormalizeTime();
 
 			return answer;
 		}
@@ -277,16 +276,25 @@
 			//answer.NormalizeTime();
 			return answer;
 		}
-		DateTime& operator = (int randValue)
+
+		void operator = (int randValue)
 		{
+			if (randValue == NULL)
+			{
+				this->date.year = 0;
+				this->date.month = 0;
+				this->date.day = 0;
+				this->date.hour = 0;
+				this->date.minut = 0;
+				this->date.second = 0;
+				return;
+			}
 			this->date.year = rand()%7/5 * rand()%2023;
 			this->date.month = rand() % 7 / 5 * rand() % 13;
 			this->date.day = rand() % 7 / 5 * rand() % 32;
 			this->date.hour = rand() % 7 / 5 * rand() % 24;
 			this->date.minut = rand() % 7 / 5 * rand() % 60;
 			this->date.second = rand() % 7 / 5 * rand() % 60;
-
-			return *this;
 		}
 		inline friend std::ostream& operator << (std::ostream& out, const DateTime& date);
 		inline friend std::istream& operator >> (std::istream& in, DateTime& date);
@@ -302,6 +310,23 @@
 			return *this;
 		}
 
+		bool operator !=(DateTime time1)
+		{
+			if (this->date.year == time1.date.year)
+				return 0;
+			if (this->date.month == time1.date.year)
+				return 0;
+			if (this->date.day == time1.date.day)
+				return 0;
+			if (this->date.hour == time1.date.hour)
+				return 0;
+			if (this->date.minut == time1.date.minut)
+				return 0;
+			if (this->date.second == time1.date.second)
+				return 0;
+
+			return 1;
+		}
 		bool operator ==(DateTime time1)
 		{
 			if (this->date.year != time1.date.year)

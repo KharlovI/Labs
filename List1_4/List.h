@@ -60,7 +60,10 @@ namespace CyclicList
             case 0:
                 for (int i = 0; i < size; i++)
                 {
-                    AddNewNode(T((rand() % 7) / 5) * (rand() % 100));
+                    T randValue;
+                    randValue = ((rand() % 7) / 5) * (rand() % 100);
+                    T temp = randValue;
+                    AddNewNode(temp);
                 }
                 break;
             case 1:
@@ -151,6 +154,9 @@ namespace CyclicList
 
         T GetValueByIndex(int index)                 ////// O(n)
         {
+            T null;
+            null = NULL;
+
             if ((index - tail->index) <= (head->index - index))
             {
                 Node* iter = tail;
@@ -160,7 +166,7 @@ namespace CyclicList
                     if (iter == head)
                     {
                         std::cout << "This index are not in the list" << std::endl;
-                        return NULL;
+                        return null;
                     }
 
                     iter = iter->prev;
@@ -177,7 +183,7 @@ namespace CyclicList
                     if (iter == tail)
                     {
                         std::cout << "This index are not in the list" << std::endl;
-                        return NULL;
+                        return null;
                     }
 
                     iter = iter->next;
@@ -201,6 +207,9 @@ namespace CyclicList
         }
         T GetFirstValueByCondition(int answer, T value) // O(n)
         {
+            T null;
+            null = NULL;
+
             Node* iter = tail;
             switch (answer)
             {
@@ -211,7 +220,7 @@ namespace CyclicList
                         return iter->data;
                     iter = iter->prev;
                 }
-                return T(NULL);
+                return null;
             case 2:
                 for (int i = 0; i < (head->index + 1); i++)
                 {
@@ -219,7 +228,7 @@ namespace CyclicList
                         return iter->data;
                     iter = iter->prev;
                 }
-                return T(NULL);
+                return null;
             case 3:
                 for (int i = 0; i < (head->index + 1); i++)
                 {
@@ -227,7 +236,7 @@ namespace CyclicList
                         return iter->data;
                     iter = iter->prev;
                 }
-                return T(NULL);
+                return null;
             }
         }
     };

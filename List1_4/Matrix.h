@@ -102,8 +102,10 @@ namespace AllMatrix
 			}
 			else
 			{
+				T null;
+				null = NULL;
 				std::cout << "out of range: i = " << this->size.i << "  j = " << this->size.j << std::endl;
-				return (T)NULL;
+				return null;
 			}
 		}
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
@@ -128,6 +130,9 @@ namespace AllMatrix
 		}
 		T GetFirstValueByConditionMatrix()
 		{
+			T null;
+			null = NULL;
+
 			CyclicList::List<CyclicList::List<T>*>::template Node* iter = this->matrix->GetTail();
 			int condition = Condition();
 			T value;
@@ -138,7 +143,7 @@ namespace AllMatrix
 
 			for (int i = 0; i < this->size.i; i++)
 			{
-				if (answer != T(NULL))
+				if (answer != null)
 					return answer;
 				iter = iter->prev;
 				answer = iter->data->GetFirstValueByCondition(condition, value);
@@ -253,7 +258,9 @@ namespace AllMatrix
 
 				for (int j = 0; j < size.j; j++)
 				{
-					temp->push_back((T) NULL);
+					T value;
+					value = NULL;
+					temp->push_back(value);
 				}
 
 				this->matrix->AddNewNode(temp);
@@ -273,7 +280,9 @@ namespace AllMatrix
 
 					for (int j = 0; j < size.j; j++)
 					{
-						temp->push_back(T(rand() % 5 / 3));
+						T value;
+						value = (rand() % 5 / 3);						
+						temp->push_back(value);
 					}
 
 					this->matrix->AddNewNode(temp);
@@ -367,7 +376,9 @@ namespace AllMatrix
 			else
 			{
 				std::cout << "out of range: i = " << this->size.i << "  j = " << this->size.j << std::endl;
-				return (T)NULL;
+				T returnedValue;
+				returnedValue = NULL;
+				return returnedValue;
 			}
 		}
 		std::vector<CyclicList::ID> GetIndexesByValueMatrix(T value)
@@ -402,7 +413,9 @@ namespace AllMatrix
 			int answer = Condition();
 
 			T value;
-			T returnedValue = NULL;
+			T returnedValue;
+
+			returnedValue = NULL;
 
 			CyclicList::List<std::vector<T>*>::template Node* iter = this->matrix->GetTail();
 
@@ -446,7 +459,7 @@ namespace AllMatrix
 				{
 					for (int j = 0; j < size.j; j++)
 					{
-						if ((*iter->data)[j] = value)
+						if ((*iter->data)[j] == value)
 						{
 							returnedValue = (*iter->data)[j];
 							return returnedValue;
@@ -539,7 +552,7 @@ namespace AllMatrix
 				temp[i] = new T[size.j];
 				for (int j = 0; j < this->size.j; j++)
 				{
-					temp[i][j] = NULL;
+					temp[i][j] = 0;
 				}
 			}
 

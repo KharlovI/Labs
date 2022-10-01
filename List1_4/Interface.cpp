@@ -42,7 +42,11 @@ void Interface::Start()
 				}
 				else if (dataType == 4)
 				{
-					std::cout << "You can not chouse this type" << std::endl;
+					AllMatrix::MatrixByList<DateTime>* matrix1 = new AllMatrix::MatrixByList<DateTime>(size, Answer());
+
+					int option = ChooseOption();
+					DoOperationListMatrix<DateTime>(matrix1, option);
+					delete matrix1;
 				}
 			}
 
@@ -71,7 +75,11 @@ void Interface::Start()
 				}
 				else if (dataType == 4)
 				{
-					std::cout << "You can not chouse this type" << std::endl;
+					AllMatrix::MatrixByListByVectors<DateTime>* matrix1 = new AllMatrix::MatrixByListByVectors<DateTime>(size, Answer());
+
+					int option = ChooseOption();
+					DoOperationVectoreMatrix<DateTime>(matrix1, option);
+					delete matrix1;
 				}
 
 			}
