@@ -73,6 +73,19 @@ inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByList<T>* matrix2 = new AllMatrix::MatrixByList<T>(size, answer);
+
+			matrix->PrintMatrix();
+
+			std::cout << std::endl << "+" << std::endl;
+
+			matrix2->PrintMatrix();
+
+			std::cout << std::endl << "||" << std::endl;
+
+			AllMatrix::MatrixByList<T>* matrix3 = matrix->SumMatrix(matrix2);
+			matrix3->PrintMatrix();
+
+			delete matrix3;
 			delete matrix2;
 		}
 		else if (option == 6)
@@ -88,13 +101,23 @@ inline void Interface::DoOperationListMatrix(AllMatrix::MatrixByList<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByList<T>* matrix2 = new AllMatrix::MatrixByList<T>(size, answer);
+			AllMatrix::MatrixByList<T>* matrix3 = matrix->MultiplyMatrices(matrix2);
+
+			matrix->PrintMatrix();
+			std::cout << std::endl << "  *  " << std::endl;
+			matrix2->PrintMatrix();
+			std::cout << std::endl << " | |  " << std::endl;
+			matrix3->PrintMatrix();
 			std::cout << std::endl;
 			delete matrix2;
+			delete matrix3;
 		}
 		else if (option == 7)
 		{
 			std::cout << std::endl;
 			AllMatrix::MatrixByList<T>* matrix2 = matrix->MatrixTransposition();
+			matrix2->PrintMatrix();
+			std::cout << std::endl;
 			delete matrix2;
 		}
 		option = ChooseOption();
@@ -153,7 +176,16 @@ inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByListByVectors<T>* matrix2 = new AllMatrix::MatrixByListByVectors<T>(size, answer);
+			AllMatrix::MatrixByListByVectors<T>* matrix3 = matrix->SumMatrices(matrix2);
+
+			matrix->PrintMatrix();
+			std::cout << std::endl << " + " << std::endl;
+			matrix2->PrintMatrix();
+			std::cout << std::endl << " || " << std::endl;
+			matrix3->PrintMatrix();
+
 			delete matrix2;
+			delete matrix3;
 		}
 		else if (option == 6)
 		{
@@ -168,12 +200,23 @@ inline void Interface::DoOperationVectoreMatrix(AllMatrix::MatrixByListByVectors
 			}
 			int answer = Answer();
 			AllMatrix::MatrixByListByVectors<T>* matrix2 = new AllMatrix::MatrixByListByVectors<T>(size, answer);
+			AllMatrix::MatrixByListByVectors<T>* matrix3 = matrix->MultiplyMatrices(matrix2);
+
+			matrix->PrintMatrix();
+			std::cout << std::endl << " * " << std::endl;
+			matrix2->PrintMatrix();
+			std::cout << std::endl << " || " << std::endl;
+			matrix3->PrintMatrix();
+
 			delete matrix2;
+			delete matrix3;
 		}
 		else if (option == 7)
 		{
 			std::cout << std::endl;
 			AllMatrix::MatrixByListByVectors<T>* matrix2 = matrix->MatrixTransposition();
+			matrix2->PrintMatrix();
+			std::cout << std::endl;
 			delete matrix2;
 		}
 		option = ChooseOption();
@@ -231,7 +274,16 @@ inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix,
 			}
 			int answer = Answer();
 			AllMatrix::ArrayMatrix<T>* matrix2 = new AllMatrix::ArrayMatrix<T>(size, answer);
+			AllMatrix::ArrayMatrix<T>* matrix3 = matrix->SumMatrices(matrix2);
+
+			matrix->PrintMatrix();
+			std::cout << std::endl << " + " << std::endl;
+			matrix2->PrintMatrix();
+			std::cout << std::endl << " || " << std::endl;
+			matrix3->PrintMatrix();
+
 			delete matrix2;
+			delete matrix3;
 		}
 		else if (option == 6)
 		{
@@ -247,12 +299,23 @@ inline void Interface::DoOperationArrayMatrix(AllMatrix::ArrayMatrix<T>* matrix,
 			int answer = Answer();
 			AllMatrix::ArrayMatrix<T>* matrix2 = new AllMatrix::ArrayMatrix<T>(size, answer);
 			std::cout << std::endl;
+			AllMatrix::ArrayMatrix<T>* matrix3 = matrix->MultiplyMatrices(matrix2);
+
+			matrix->PrintMatrix();
+			std::cout << std::endl << " * " << std::endl;
+			matrix2->PrintMatrix();
+			std::cout << std::endl << " || " << std::endl;
+			matrix3->PrintMatrix();
+
 			delete matrix2;
+			delete matrix3;
 		}
 		else if (option == 7)
 		{
 			std::cout << std::endl;
 			AllMatrix::ArrayMatrix<T>* matrix2 = matrix->MatrixTransposition();
+			matrix2->PrintMatrix();
+			std::cout << std::endl;
 			delete matrix2;
 		}
 		option = ChooseOption();

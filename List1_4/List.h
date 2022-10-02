@@ -48,7 +48,10 @@ namespace CyclicList
             this->tail = nullptr;
             for (int i = 0; i < size; i++)
             {
-                AddNewNode(NULL);
+                T null;
+                null = NULL;
+
+                AddNewNode(null);
             }
         }
         List(int size, int answer)

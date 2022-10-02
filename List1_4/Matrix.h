@@ -471,7 +471,7 @@ namespace AllMatrix
 			}
 		}
 
-		MatrixByListByVectors<T>* SumMatrix(MatrixByListByVectors<T>* m2)
+		MatrixByListByVectors<T>* SumMatrices(MatrixByListByVectors<T>* m2)
 		{
 			MatrixByListByVectors<T>* answer = new MatrixByListByVectors<T>();
 			answer->SetSize({this->size.i, this->size.j});
@@ -699,7 +699,7 @@ namespace AllMatrix
 			return v;
 		}
 
-		ArrayMatrix<T>* SumMatrix(ArrayMatrix<T>* m2)
+		ArrayMatrix<T>* SumMatrices(ArrayMatrix<T>* m2)
 		{
 			ArrayMatrix<T>* answer = new ArrayMatrix<T>(this->size);
 
